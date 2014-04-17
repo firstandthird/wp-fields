@@ -92,6 +92,7 @@ class ftFields {
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? "placeholder=\"{$input['placeholder']}\"" : "";
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? "value=\"{$existing[$slug][0]}\"" : "value=\"\"";
+    $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
 
     echo '<p>';
 
@@ -99,7 +100,7 @@ class ftFields {
       echo "<label for=\"{$slug}\" class=\"ft_fields_label\">{$input['label']}</label>";
     }
 
-    echo "<input type=\"text\" class=\"ft_fields_input\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} />";
+    echo "<input type=\"text\" class=\"ft_fields_input\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
     echo '</p>';
   }
 
@@ -108,6 +109,7 @@ class ftFields {
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? "placeholder=\"{$input['placeholder']}\"" : "";
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? "value=\"{$existing[$slug][0]}\"" : "value=\"\"";
+    $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
 
     echo '<p>';
     
@@ -115,7 +117,7 @@ class ftFields {
       echo "<label for=\"{$slug}\" class=\"ft_fields_label\">{$input['label']}</label>";
     }
 
-    echo "<input type=\"password\" class=\"ft_fields_input\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} />";
+    echo "<input type=\"password\" class=\"ft_fields_input\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
     echo '</p>';
   }
 }
