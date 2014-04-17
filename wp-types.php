@@ -90,7 +90,13 @@ class ftFields {
         $slug = "ft_fields_{$meta['id']}_{$input['name']}";
 
         if(isset($_POST[$slug])) {
-          update_post_meta($post_id, $slug, sanitize_text_field($_POST[$slug]));
+          $value = $_POST[$slug];
+
+          if(is_array($value)) {
+            $value = json_encode($value);
+          }
+
+          update_post_meta($post_id, $slug, sanitize_text_field($value));
         }
       }
     }
@@ -110,6 +116,10 @@ class ftFields {
       echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
     }
 
+    if(isset($input['description']) && !empty($input['description'])) {
+      echo "<small class=\"ft-fields-description\">{$input['description']}</small>";
+    }
+
     echo "<input type=\"text\" class=\"ft-fields-input ft-fields-input-text\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
     echo '</p>';
   }
@@ -125,6 +135,10 @@ class ftFields {
     
     if(isset($input['label']) && !empty($input['label'])) {
       echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
+    }
+
+    if(isset($input['description']) && !empty($input['description'])) {
+      echo "<small class=\"ft-fields-description\">{$input['description']}</small>";
     }
 
     echo "<input type=\"password\" class=\"ft-fields-input ft-fields-input-password\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
@@ -144,8 +158,45 @@ class ftFields {
       echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
     }
 
+    if(isset($input['description']) && !empty($input['description'])) {
+      echo "<small class=\"ft-fields-description\">{$input['description']}</small>";
+    }
+
     echo "<input type=\"text\" class=\"ft-fields-input ft-fields-input-media\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
     echo "<input type=\"button\" class=\"button ft-fields-button\" data-ft-fields-action=\"open-media\" data-ft-fields-target=\"{$slug}\" value=\"Select Media\" />";
+    echo '</p>';
+  }
+
+  function render_select_input($post, $meta, $existing, $input) {
+    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+
+    $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? $input['placeholder'] : "";
+    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? json_decode($existing[$slug][0]) : "";
+    $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
+
+    $multiple = (isset($input['multiple']) && $input['multiple'] === true) ? "multiple" : "";
+
+    echo '<p>';
+
+    if(isset($input['label']) && !empty($input['label'])) {
+      echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
+    }
+
+    if(isset($input['description']) && !empty($input['description'])) {
+      echo "<small class=\"ft-fields-description\">{$input['description']}</small>";
+    }
+
+    echo "<select name=\"{$slug}[]\" id=\"{$slug}\" {$multiple}>";
+
+    if(!empty($placeholder)) {
+      echo "<option value=\"\" " . ($value === '' ? 'selected' : '') . ">{$placeholder}</option>";
+    }
+
+    foreach($input['options'] as $option) {
+      echo "<option value=\"{$option['value']}\" " . (in_array($option['value'], $value) ? 'selected' : '') . ">{$option['title']}</option>";
+    }
+
+    echo "</select>";
     echo '</p>';
   }
 }

@@ -13,10 +13,34 @@ inputs:
     label: Secret word
     placeholder: Your secret word
     required: true
-    
+
   - type: media
     name: funny_image
     label: Funny Image
     placeholder: Image
+    description: Image should be 100 x 100
     required: false
 
+  - type: select
+    name: joke_cat
+    label: Joke Category
+    placeholder: Select Category
+    multiple: false
+    options:
+      - title: Funny
+        value: funny
+      - title: Unfunny
+        value: unfunny
+
+  - type: select
+    name: joke_audience
+    label: Joke Audience
+    placeholder: Select Audience
+    multiple: true
+    options:
+      - title: Kids
+        value: kids
+      - title: Teens
+        value: teens
+      - title: Adults
+        value: adults

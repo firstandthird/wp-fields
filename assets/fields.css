@@ -1,3 +1,9 @@
 .ft-fields-label {
   display: block;
 }
+
+.ft-fields-description {
+  display: block;
+  color: #666;
+  font-style: italic;
+}
