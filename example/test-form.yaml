@@ -13,4 +13,10 @@ inputs:
     label: Secret word
     placeholder: Your secret word
     required: true
+    
+  - type: media
+    name: funny_image
+    label: Funny Image
+    placeholder: Image
+    required: false
 

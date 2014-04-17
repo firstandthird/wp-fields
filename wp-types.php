@@ -54,7 +54,9 @@ class ftFields {
 
   function load_assets() {
     wp_register_style('ft_fields', plugins_url('assets/fields.css', __FILE__ ));
+    wp_register_script('ft_fields', plugins_url('assets/fields.js', __FILE__ ));
     wp_enqueue_style('ft_fields');
+    wp_enqueue_script('ft_fields');
   }
 
   function render_meta_box($post, $data) {
@@ -126,6 +128,24 @@ class ftFields {
     }
 
     echo "<input type=\"password\" class=\"ft-fields-input ft-fields-input-password\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
+    echo '</p>';
+  }
+
+  function render_media_input($post, $meta, $existing, $input) {
+    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+
+    $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? "placeholder=\"{$input['placeholder']}\"" : "";
+    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? "value=\"{$existing[$slug][0]}\"" : "value=\"\"";
+    $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
+
+    echo '<p>';
+
+    if(isset($input['label']) && !empty($input['label'])) {
+      echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
+    }
+
+    echo "<input type=\"text\" class=\"ft-fields-input ft-fields-input-media\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
+    echo "<input type=\"button\" class=\"button ft-fields-button\" data-ft-fields-action=\"open-media\" data-ft-fields-target=\"{$slug}\" value=\"Select Media\" />";
     echo '</p>';
   }
 }
