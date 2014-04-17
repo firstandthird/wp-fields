@@ -1,0 +1,10 @@
+id: custom_post
+title: Joke Author
+post_type: joke
+inputs:
+  - type: text
+    name: joke_author
+    label: Joke Author
+    placeholder: Name
+    required: false
+
