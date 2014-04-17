@@ -25,6 +25,9 @@ class ftFields {
     // Save
     add_action('save_post', array($this, 'save_meta'));
 
+    // Assets
+    add_action('admin_init', array($this, 'load_assets'));
+
     $this->parse();
   }
 
@@ -47,6 +50,11 @@ class ftFields {
 
       add_meta_box('ft_fields' . $meta['id'], $meta['title'], array($this, 'render_meta_box'), $post_type, $context, $priority, array($mid));
     }
+  }
+
+  function load_assets() {
+    wp_register_style('ft_fields', plugins_url('assets/fields.css', __FILE__ ));
+    wp_enqueue_style('ft_fields');
   }
 
   function render_meta_box($post, $data) {
@@ -97,10 +105,10 @@ class ftFields {
     echo '<p>';
 
     if(isset($input['label']) && !empty($input['label'])) {
-      echo "<label for=\"{$slug}\" class=\"ft_fields_label\">{$input['label']}</label>";
+      echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
     }
 
-    echo "<input type=\"text\" class=\"ft_fields_input\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
+    echo "<input type=\"text\" class=\"ft-fields-input ft-fields-input-text\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
     echo '</p>';
   }
 
@@ -114,10 +122,10 @@ class ftFields {
     echo '<p>';
     
     if(isset($input['label']) && !empty($input['label'])) {
-      echo "<label for=\"{$slug}\" class=\"ft_fields_label\">{$input['label']}</label>";
+      echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
     }
 
-    echo "<input type=\"password\" class=\"ft_fields_input\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
+    echo "<input type=\"password\" class=\"ft-fields-input ft-fields-input-password\" name=\"{$slug}\" id=\"{$slug}\" autocomplete=\"off\" {$placeholder} {$value} {$required} />";
     echo '</p>';
   }
 }
