@@ -1,0 +1,16 @@
+id: group_2
+title: Group 2
+post_type: post
+inputs:
+  - type: text
+    name: your_name
+    label: Name
+    placeholder: Your name
+    required: true
+
+  - type: password
+    name: secret_word
+    label: Secret word
+    placeholder: Your secret word
+    required: true
+
