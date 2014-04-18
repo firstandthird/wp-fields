@@ -48,7 +48,13 @@ class ftFields {
       $context = isset($meta['context']) ? $meta['context'] : 'advanced';
       $priority = isset($meta['priority']) ? $meta['priority'] : 'default';
 
-      add_meta_box('ft_fields' . $meta['id'], $meta['title'], array($this, 'render_meta_box'), $post_type, $context, $priority, array($mid));
+      if(!is_array($post_type)) {
+        $post_type = array($post_type);
+      }
+
+      foreach($post_type as $type) {
+        add_meta_box('ft_fields' . $meta['id'], $meta['title'], array($this, 'render_meta_box'), $type, $context, $priority, array($mid));
+      }
     }
   }
 
