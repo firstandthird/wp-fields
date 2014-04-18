@@ -224,6 +224,31 @@ class ftFields {
 
     echo '</p>';
   }
+
+  function render_radio_input($post, $meta, $existing, $input) {
+    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+
+    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? $existing[$slug][0] : "";
+    $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
+
+    $multiple = (isset($input['multiple']) && $input['multiple'] === true) ? "multiple" : "";
+
+    echo '<p>';
+
+    if(isset($input['label']) && !empty($input['label'])) {
+      echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
+    }
+
+    if(isset($input['description']) && !empty($input['description'])) {
+      echo "<small class=\"ft-fields-description\">{$input['description']}</small>";
+    }
+
+    foreach($input['options'] as $option) {
+      echo "<div class=\"ft-fields-radio-group\"><input type=\"radio\" name=\"{$slug}\" id=\"{$slug}_{$option['value']}\" value=\"{$option['value']}\" " . ($option['value'] === $value ? 'checked' : '') . "><label for=\"{$slug}_{$option['value']}\">{$option['title']}</label></div>";
+    }
+
+    echo '</p>';
+  }
 }
 
 $ftFields = new ftFields;
