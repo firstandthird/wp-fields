@@ -55,6 +55,7 @@ inputs:
         value: robots
       - title: Trans Fat
         value: trans_fat
+
   - type: radio
     name: joke_rating
     label: Rating
@@ -65,3 +66,13 @@ inputs:
         value: '5'
       - title: '10'
         value: '10'
+
+  - type: textarea
+    name: extended_joke
+    label: Full Joke
+    wysiwyg: true
+
+  - type: textarea
+    name: joke_desc
+    label: Description
+    placeholder: Enter the jokes description

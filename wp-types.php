@@ -231,8 +231,6 @@ class ftFields {
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? $existing[$slug][0] : "";
     $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
 
-    $multiple = (isset($input['multiple']) && $input['multiple'] === true) ? "multiple" : "";
-
     echo '<p>';
 
     if(isset($input['label']) && !empty($input['label'])) {
@@ -245,6 +243,32 @@ class ftFields {
 
     foreach($input['options'] as $option) {
       echo "<div class=\"ft-fields-radio-group\"><input type=\"radio\" name=\"{$slug}\" id=\"{$slug}_{$option['value']}\" value=\"{$option['value']}\" " . ($option['value'] === $value ? 'checked' : '') . "><label for=\"{$slug}_{$option['value']}\">{$option['title']}</label></div>";
+    }
+
+    echo '</p>';
+  }
+
+  function render_textarea_input($post, $meta, $existing, $input) {
+    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+
+    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? $existing[$slug][0] : "";
+    $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
+    $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? "placeholder=\"{$input['placeholder']}\"" : "";
+
+    echo '<p>';
+
+    if(isset($input['label']) && !empty($input['label'])) {
+      echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
+    }
+
+    if(isset($input['description']) && !empty($input['description'])) {
+      echo "<small class=\"ft-fields-description\">{$input['description']}</small>";
+    }
+
+    if(isset($input['wysiwyg']) && $input['wysiwyg']) {
+      wp_editor($value, $slug);
+    } else {
+      echo "<textarea class=\"ft-fields-textarea\" name=\"{$slug}\" id=\"{$slug}\" {$placeholder}>{$value}</textarea>";
     }
 
     echo '</p>';
