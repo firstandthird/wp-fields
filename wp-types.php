@@ -171,7 +171,7 @@ class ftFields {
     $slug = "ft_fields_{$meta['id']}_{$input['name']}";
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? $input['placeholder'] : "";
-    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? json_decode($existing[$slug][0]) : "";
+    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? json_decode($existing[$slug][0]) : array();
     $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
 
     $multiple = (isset($input['multiple']) && $input['multiple'] === true) ? "multiple" : "";
@@ -189,7 +189,7 @@ class ftFields {
     echo "<select name=\"{$slug}[]\" id=\"{$slug}\" {$multiple}>";
 
     if(!empty($placeholder)) {
-      echo "<option value=\"\" " . ($value === '' ? 'selected' : '') . ">{$placeholder}</option>";
+      echo "<option value=\"\" " . (!count($value) || in_array($option['value'], $value) ? 'selected' : '') . ">{$placeholder}</option>";
     }
 
     foreach($input['options'] as $option) {
@@ -197,6 +197,31 @@ class ftFields {
     }
 
     echo "</select>";
+    echo '</p>';
+  }
+
+  function render_checkbox_input($post, $meta, $existing, $input) {
+    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+
+    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? json_decode($existing[$slug][0]) : array();
+    $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
+
+    $multiple = (isset($input['multiple']) && $input['multiple'] === true) ? "multiple" : "";
+
+    echo '<p>';
+
+    if(isset($input['label']) && !empty($input['label'])) {
+      echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
+    }
+
+    if(isset($input['description']) && !empty($input['description'])) {
+      echo "<small class=\"ft-fields-description\">{$input['description']}</small>";
+    }
+
+    foreach($input['options'] as $option) {
+      echo "<div class=\"ft-fields-checkbox-group\"><input type=\"checkbox\" name=\"{$slug}[]\" id=\"{$slug}_{$option['value']}\" value=\"{$option['value']}\" " . (in_array($option['value'], $value) ? 'checked' : '') . "><label for=\"{$slug}_{$option['value']}\">{$option['title']}</label></div>";
+    }
+
     echo '</p>';
   }
 }

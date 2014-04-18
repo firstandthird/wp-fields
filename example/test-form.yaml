@@ -44,3 +44,13 @@ inputs:
         value: teens
       - title: Adults
         value: adults
+  - type: checkbox
+    name: joke_contains
+    label: Joke Contains
+    options:
+      - title: Language
+        value: language
+      - title: Robots
+        value: robots
+      - title: Trans Fat
+        value: trans_fat
