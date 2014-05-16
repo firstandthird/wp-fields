@@ -93,7 +93,7 @@ class ftFields {
 
     foreach($this->config as $meta) {
       foreach($meta['inputs'] as $input) {
-        $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+        $slug = "ft_fields_{$input['name']}";
 
         if(isset($_POST[$slug])) {
           $value = $_POST[$slug];
@@ -108,9 +108,35 @@ class ftFields {
     }
   }
 
+  // Public API
+  static function get_meta($id, $field = null) {
+    $fields = get_post_meta($id);
+
+    $field = 'ft_fields_' . $field;
+
+    if($field === null) {
+      return $fields;
+    } else if(array_key_exists($field, $fields)) {
+      $output = $fields[$field];
+
+      // Quickly check if json
+      if(is_string($output)) {
+        $decoded = json_decode($output);
+
+        if(json_last_error() === JSON_ERROR_NONE) {
+          $output = $decoded;
+        }
+      }
+
+      return $output;
+    }
+
+    return false;
+  }
+
   // Render methods
   function render_text_input($post, $meta, $existing, $input) {
-    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+    $slug = "ft_fields_{$input['name']}";
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? "placeholder=\"{$input['placeholder']}\"" : "";
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? "value=\"{$existing[$slug][0]}\"" : "value=\"\"";
@@ -131,7 +157,7 @@ class ftFields {
   }
 
   function render_password_input($post, $meta, $existing, $input) {
-    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+    $slug = "ft_fields_{$input['name']}";
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? "placeholder=\"{$input['placeholder']}\"" : "";
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? "value=\"{$existing[$slug][0]}\"" : "value=\"\"";
@@ -152,7 +178,7 @@ class ftFields {
   }
 
   function render_media_input($post, $meta, $existing, $input) {
-    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+    $slug = "ft_fields_{$input['name']}";
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? "placeholder=\"{$input['placeholder']}\"" : "";
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? "value=\"{$existing[$slug][0]}\"" : "value=\"\"";
@@ -174,7 +200,7 @@ class ftFields {
   }
 
   function render_select_input($post, $meta, $existing, $input) {
-    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+    $slug = "ft_fields_{$input['name']}";
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? $input['placeholder'] : "";
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? json_decode($existing[$slug][0]) : array();
@@ -207,7 +233,7 @@ class ftFields {
   }
 
   function render_checkbox_input($post, $meta, $existing, $input) {
-    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+    $slug = "ft_fields_{$input['name']}";
 
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? json_decode($existing[$slug][0]) : array();
     $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
@@ -232,7 +258,7 @@ class ftFields {
   }
 
   function render_radio_input($post, $meta, $existing, $input) {
-    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+    $slug = "ft_fields_{$input['name']}";
 
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? $existing[$slug][0] : "";
     $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
@@ -255,7 +281,7 @@ class ftFields {
   }
 
   function render_textarea_input($post, $meta, $existing, $input) {
-    $slug = "ft_fields_{$meta['id']}_{$input['name']}";
+    $slug = "ft_fields_{$input['name']}";
 
     $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? $existing[$slug][0] : "";
     $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";

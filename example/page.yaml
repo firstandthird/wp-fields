@@ -1,0 +1,10 @@
+id: cat_facts
+title: Cat Facts
+post_type: page
+inputs:
+  - type: media
+    name: cat_pic
+    label: Cat Picture
+    placeholder: Image
+    description: Image should be 100 x 100
+    required: false

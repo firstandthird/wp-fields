@@ -121,7 +121,6 @@ options:
     value: adults
 ```
 
-
 \* = required
 
 ## Configuring config path
@@ -134,3 +133,43 @@ function test_fields() {
   do_action('ft_fields_path', '/your/path/here/');
 }
 ```
+
+## Using meta
+
+All field metadata is stored in the wordpress database along with any other custom fields that other plugins might generate. There's two ways to get data back:
+
+### Wordpress way
+
+The following will return all post meta for a given post.
+
+```php
+$fields = get_post_meta($id);
+```
+
+### ftFields way (easier)
+
+ftFields includes a built in method to get only metadata set by the plugin. In your plugin you can do:
+
+```php
+ftFields::get_meta($id, $field);
+```
+
+Or you can add the following snippet to your `functions.php` to expose a helper for your templates.
+
+```php
+function get_custom_fields($id, $field) {
+  if(class_exists('ftFields')) {
+    return ftFields::get_meta($id, $field);
+  } else {
+    return null;
+  }
+}
+```
+
+The `$field` argument is the name you gave the element in the config. Here's how it could look in your template:
+
+```html
+<img src="<?php echo array_shift(get_custom_fields(get_the_ID(), 'cat_pic')); ?>"/>
+```
+
+Keep in mind that `get_custom_fields()` will return an array.
