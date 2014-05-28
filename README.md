@@ -169,7 +169,5 @@ function get_custom_fields($id, $field) {
 The `$field` argument is the name you gave the element in the config. Here's how it could look in your template:
 
 ```html
-<img src="<?php echo array_shift(get_custom_fields(get_the_ID(), 'cat_pic')); ?>"/>
+<img src="<?php echo get_custom_fields(get_the_ID(), 'cat_pic'); ?>"/>
 ```
-
-Keep in mind that `get_custom_fields()` will return an array.

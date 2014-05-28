@@ -128,6 +128,10 @@ class ftFields {
         }
       }
 
+      if(is_array($output) && count($output) === 1) {
+        $output = $output[0];
+      }
+
       return $output;
     }
 
