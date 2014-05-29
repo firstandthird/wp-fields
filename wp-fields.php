@@ -99,7 +99,11 @@ class ftFields {
           $value = $_POST[$slug];
 
           if(is_array($value)) {
-            $value = json_encode($value);
+            if(count($value) === 1) {
+              $value = $value[0];
+            } else {
+              $value = json_encode($value);
+            }
           }
 
           update_post_meta($post_id, $slug, sanitize_text_field($value));
@@ -119,23 +123,34 @@ class ftFields {
     } else if(array_key_exists($field, $fields)) {
       $output = $fields[$field];
 
-      // Quickly check if json
-      if(is_string($output)) {
-        $decoded = json_decode($output);
-
-        if(json_last_error() === JSON_ERROR_NONE) {
-          $output = $decoded;
-        }
-      }
-
       if(is_array($output) && count($output) === 1) {
         $output = $output[0];
+      }
+
+      // Quickly check if json
+      if(is_string($output)) {
+        $output = self::parse_data($output);
+
+        // json might come back as an array
+        if(is_array($output) && count($output) === 1) {
+          $output = $output[0];
+        }
       }
 
       return $output;
     }
 
     return false;
+  }
+
+  function parse_data($data) {
+    $decoded = json_decode($data);
+
+    if(json_last_error() === JSON_ERROR_NONE) {
+      $data = $decoded;
+    }
+
+    return $data;
   }
 
   // Render methods
@@ -207,7 +222,8 @@ class ftFields {
     $slug = "ft_fields_{$input['name']}";
 
     $placeholder = (isset($input['placeholder']) && !empty($input['placeholder'])) ? $input['placeholder'] : "";
-    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? json_decode($existing[$slug][0]) : array();
+
+    $value = (isset($existing[$slug]) && isset($existing[$slug][0])) ? (array) $this->parse_data($existing[$slug][0]) : array();
     $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
 
     $multiple = (isset($input['multiple']) && $input['multiple'] === true) ? "multiple" : "";
