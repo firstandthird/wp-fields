@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: wp-fields
+ * Plugin Name: First+Third Fields
  * Description: Wordpress Custom Fields Plugin
  */
 
