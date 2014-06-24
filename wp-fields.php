@@ -68,7 +68,7 @@ class ftFields {
   function render_meta_box($post, $data) {
     $meta = $this->config[$data['args'][0]];
     $existing = get_post_meta($post->ID);
-  
+
     foreach($meta['inputs'] as $input) {
       if(method_exists($this, "render_{$input['type']}_input")) {
         call_user_func_array(array($this, "render_{$input['type']}_input"), array($post, $meta, $existing, $input));
@@ -106,7 +106,7 @@ class ftFields {
             }
           }
 
-          update_post_meta($post_id, $slug, sanitize_text_field($value));
+          update_post_meta($post_id, $slug, $value);
         }
       }
     }
@@ -183,7 +183,7 @@ class ftFields {
     $required = (isset($input['required']) && $input['required']) ? "data-ft-fields-required" : "";
 
     echo '<p>';
-    
+
     if(isset($input['label']) && !empty($input['label'])) {
       echo "<label for=\"{$slug}\" class=\"ft-fields-label\">{$input['label']}</label>";
     }
